@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
-const BACKEND_BASE = 'http://127.0.0.1:8000';
+const API_BASE_URL = 'https://mahadev-a33u.onrender.com/api';
+const BACKEND_BASE = 'https://mahadev-a33u.onrender.com';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
