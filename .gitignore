@@ -1,0 +1,28 @@
+# Node / Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.sqlite3
+db.sqlite3
+backend/db.sqlite3
+media/
+backend/media/
+venv/
+.venv/
+env/
+
+# Environment / Secret files
+.env
+*.env
+
+# System / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
