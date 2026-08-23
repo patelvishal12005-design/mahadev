@@ -3,7 +3,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from django.http import JsonResponse
+
+def home_view(request):
+    return JsonResponse({"status": "running", "message": "Mahadev Decor Backend API Server"})
+
 urlpatterns = [
+    path('', home_view),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
 ]
