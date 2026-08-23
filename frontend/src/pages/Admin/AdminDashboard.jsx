@@ -77,7 +77,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Metric Cards Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((card, idx) => {
           const Icon = card.icon;
           return (
@@ -99,7 +99,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Booking Status Summary Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between">
           <div>
             <span className="text-xs font-bold text-amber-300 uppercase tracking-wider block">Pending Bookings</span>

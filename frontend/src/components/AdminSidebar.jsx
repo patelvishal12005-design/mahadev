@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, FolderTree, Layers, Sparkles, MapPin,
-  CalendarDays, Image as ImageIcon, Users, Settings, LogOut, ExternalLink
+  CalendarDays, Settings, LogOut, ExternalLink, Menu, X
 } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 
@@ -10,6 +10,7 @@ export default function AdminSidebar() {
   const { user, logout } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -26,12 +27,12 @@ export default function AdminSidebar() {
     { label: 'Settings', path: '/admin/settings', icon: Settings },
   ];
 
-  return (
-    <aside className="w-64 bg-slate-950 border-r border-slate-800/80 flex flex-col justify-between h-screen sticky top-0 shrink-0">
+  const SidebarContent = () => (
+    <div className="flex flex-col justify-between h-full">
       <div>
         {/* Admin Header Logo */}
         <div className="p-5 border-b border-slate-800 flex items-center justify-between">
-          <Link to="/admin" className="flex items-center space-x-2.5">
+          <Link to="/admin" onClick={() => setMobileOpen(false)} className="flex items-center space-x-2.5">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-500 to-amber-400 p-0.5 shadow-md shadow-rose-500/20">
               <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-rose-400" />
@@ -46,6 +47,12 @@ export default function AdminSidebar() {
               </span>
             </div>
           </Link>
+          <button
+            onClick={() => setMobileOpen(false)}
+            className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Admin User Info */}
@@ -71,6 +78,7 @@ export default function AdminSidebar() {
               <Link
                 key={item.path}
                 to={item.path}
+                onClick={() => setMobileOpen(false)}
                 className={`flex items-center space-x-3 px-3.5 py-2.5 rounded-xl transition-all ${
                   isActive
                     ? 'bg-rose-600 text-white font-bold shadow-lg shadow-rose-600/25'
@@ -90,6 +98,7 @@ export default function AdminSidebar() {
         <Link
           to="/"
           target="_blank"
+          onClick={() => setMobileOpen(false)}
           className="flex items-center justify-between px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white text-xs font-medium transition-colors border border-slate-800"
         >
           <span className="flex items-center">
@@ -106,6 +115,54 @@ export default function AdminSidebar() {
           <span>Logout Admin</span>
         </button>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Mobile & Tablet Header Navigation Bar */}
+      <div className="lg:hidden sticky top-0 z-40 bg-slate-950/95 backdrop-blur border-b border-slate-800 px-4 py-3 flex items-center justify-between w-full">
+        <Link to="/admin" className="flex items-center space-x-2">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-rose-500 to-amber-400 p-0.5 shadow-md">
+            <div className="w-full h-full bg-slate-950 rounded-[7px] flex items-center justify-center">
+              <Sparkles className="w-3.5 h-3.5 text-rose-400" />
+            </div>
+          </div>
+          <span className="text-sm font-black tracking-tight text-white">
+            ADMIN<span className="gradient-text">PANEL</span>
+          </span>
+        </Link>
+
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 hover:text-white hover:bg-slate-800 transition-colors"
+          aria-label="Toggle Navigation Menu"
+        >
+          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
+
+      {/* Mobile Drawer Backdrop Overlay */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm lg:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      {/* Mobile Slide-Over Drawer */}
+      <div
+        className={`fixed inset-y-0 left-0 z-50 w-72 bg-slate-950 border-r border-slate-800 transform transition-transform duration-300 ease-in-out lg:hidden ${
+          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <SidebarContent />
+      </div>
+
+      {/* Desktop Persistent Sidebar */}
+      <aside className="hidden lg:flex w-64 bg-slate-950 border-r border-slate-800/80 flex-col justify-between h-screen sticky top-0 shrink-0">
+        <SidebarContent />
+      </aside>
+    </>
   );
 }
